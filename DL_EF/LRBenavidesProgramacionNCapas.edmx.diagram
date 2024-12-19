@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e79ace1c31ee4d449a46cdf8d6b8c107" Name="Diagram1">
+        <EntityTypeShape EntityType="LRBenavidesProgramacionNCapasModel.Rol" Width="1.5" PointX="0.75" PointY="2.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="LRBenavidesProgramacionNCapasModel.Usuario" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <AssociationConnector Association="LRBenavidesProgramacionNCapasModel.FK__Usuario__IdRol__15502E78" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="LRBenavidesProgramacionNCapasModel.Colonia" Width="1.5" PointX="9.875" PointY="1.125" />
+        <EntityTypeShape EntityType="LRBenavidesProgramacionNCapasModel.Direccion" Width="1.5" PointX="12.125" PointY="1.625" />
+        <EntityTypeShape EntityType="LRBenavidesProgramacionNCapasModel.Estado" Width="1.5" PointX="5.375" PointY="1.375" />
+        <EntityTypeShape EntityType="LRBenavidesProgramacionNCapasModel.Municipio" Width="1.5" PointX="7.625" PointY="1.25" />
+        <AssociationConnector Association="LRBenavidesProgramacionNCapasModel.FK__Colonia__IdMunic__29572725" />
+        <AssociationConnector Association="LRBenavidesProgramacionNCapasModel.FK__Direccion__IdCol__2C3393D0" />
+        <AssociationConnector Association="LRBenavidesProgramacionNCapasModel.FK__Direccion__IdUsu__2D27B809" />
+        <AssociationConnector Association="LRBenavidesProgramacionNCapasModel.FK__Municipio__IdEst__25869641" />
+        <EntityTypeShape EntityType="LRBenavidesProgramacionNCapasModel.UsuarioGetAllView" Width="1.5" PointX="5.375" PointY="4.75" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

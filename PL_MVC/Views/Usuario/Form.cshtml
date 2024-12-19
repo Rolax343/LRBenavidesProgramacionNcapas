@@ -1,0 +1,405 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "Form";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="my-4 text-center">Usuario</h2>
+<style>
+    .valido {
+        border-color: green;
+    }
+
+    .invalido {
+        border-color: red;
+    }
+
+    .parpadeo {
+        transition: background-color 0.5s ease;
+    }
+</style>
+@using (Html.BeginForm("Form", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = " return ComprobarFormato()" }))
+{
+    <div class="container">
+        <div class="row">
+            @Html.HiddenFor(model => model.Id)
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.Nombre, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control mx-auto parpadeo", style = "width: 80%;", placeholder = "Inserta tu nombre", @onkeypress = "validarTexto(event, this, 'errorNombre',/^[a-zA-ZáéíóúÁÉÍÓÚ\\s]*$/ );validarLongitud(event, this, 'errorNombreLongitud', '50');" })
+                <div class="text-danger" id="errorNombre" style="display: none; font-size: 0.9em;">El nombre unicamente puede contener letras y espacios</div>
+                <div class="text-danger" id="errorNombreLongitud" style="display: none; font-size: 0.9em;">El nombre unicamente puede contener 50 caracteres</div>
+                <div class="text-danger" id="errorNombreVacio" style="display: none; font-size: 0.9em;">El nombre no puede encontrarse vacio</div>
+                <div class="text-danger" font-size: 0.9em;">@Html.ValidationMessageFor(model => model.Nombre)</div>
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.ApellidoPaterno, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control mx-auto parpadeo", style = "width: 80%;", placeholder = "Inserta tu apellido paterno", @onkeypress = "validarTexto(event, this, 'errorApellidoP', /^[a-zA-ZáéíóúÁÉÍÓÚ]*$/ );validarLongitud(event, this, 'errorApellidoPLongitud', '50');" })
+                <div class="text-danger" id="errorApellidoP" style="display: none; font-size: 0.9em;">El apellido paterno unicamente puede contener letras</div>
+                <div class="text-danger" id="errorApellidoPLongitud" style="display: none; font-size: 0.9em;">El apellido paterno unicamente puede contener 50 caracteres</div>
+                <div class="text-danger" id="errorApellidoPaternoVacio" style="display: none; font-size: 0.9em;">El apellido paterno no puede encontrarse vacio</div>
+                <div class="text-danger" font-size: 0.9em;">@Html.ValidationMessageFor(model => model.ApellidoPaterno)</div>
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.ApellidoMaterno, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control mx-auto parpadeo", style = "width: 80%;", placeholder = "Inserta tu apellido materno", @onkeypress = "validarTexto(event, this, 'errorApellidoM', /^[a-zA-ZáéíóúÁÉÍÓÚ]*$/  );validarLongitud(event, this, 'errorApellidoMLongitud', '50');" })
+                <div class="text-danger" id="errorApellidoM" style="display: none; font-size: 0.9em;">El apellido materno unicamente puede contener letras</div>
+                <div class="text-danger" id="errorApellidoMLongitud" style="display: none; font-size: 0.9em;">El apellido materno unicamente puede contener 50 caracteres</div>
+                <div class="text-danger" font-size: 0.9em;">@Html.ValidationMessageFor(model => model.ApellidoMaterno)</div>
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.Sexo, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.Sexo, new { @class = "form-control mx-auto parpadeo", style = "width: 80%;", placeholder = "Inserta tu sexo (H o M)", @onkeypress = "validarTexto(event, this, 'errorSexo', /[H-M]/  );validarLongitud(event, this, 'errorSexoLongitud', '1');" })
+                <div class="text-danger" id="errorSexo" style="display: none; font-size: 0.9em;">El campo de sexo unicamente puede contener (H o M)</div>
+                <div class="text-danger" id="errorSexoLongitud" style="display: none; font-size: 0.9em;">El campo de sexo unicamente puede contener 1 caracter</div>
+                <div class="text-danger" id="errorSexoVacio" style="display: none; font-size: 0.9em;">El campo de sexo no puede encontrarse vacio</div>
+                <div class="text-danger" font-size: 0.9em;">@Html.ValidationMessageFor(model => model.Sexo)</div>
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.UserName, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control mx-auto parpadeo", style = "width: 80%;", placeholder = "Inserta tu nombre de usuario", @onkeypress = "validarTexto(event, this, 'errorUserName', /^[^\\s]*$/  );validarLongitud(event, this, 'errorUserNameLongitud', '50');" })
+                <div class="text-danger" id="errorUserName" style="display: none; font-size: 0.9em;">El nombre de usuario no puede contener espacios</div>
+                <div class="text-danger" id="errorUserNameLongitud" style="display: none; font-size: 0.9em;">El nombre de usuario unicamente puede contener 50 caracteres</div>
+                <div class="text-danger" id="errorUserNameVacio" style="display: none; font-size: 0.9em;">El nombre de usuario no puede encontrarse vacio</div>
+                <div class="text-danger" font-size: 0.9em;">@Html.ValidationMessageFor(model => model.UserName)</div>
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.Email, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control mx-auto parpadeo", style = "width: 80%;", placeholder = "Inserta tu correo electrónico", @onkeypress = "validarTexto(event, this, 'errorEmail', /^[^\\s]*$/  );validarLongitud(event, this, 'errorEmailLongitud', '254');", @onblur = "validarCampo(this, 'errorEmail2', /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/)" })
+                <div class="text-danger" id="errorEmail" style="display: none; font-size: 0.9em;">El correo electronico no puede contener espacios</div>
+                <div class="text-danger" id="errorEmail2" style="display: none; font-size: 0.9em;">El correo electronico no coincide con el formato de email</div>
+                <div class="text-danger" id="errorEmailLongitud" style="display: none; font-size: 0.9em;">El correo electronico unicamente puede contener 254 caracteres como maximo</div>
+                <div class="text-danger" id="errorEmailVacio" style="display: none; font-size: 0.9em;">El correo electronico no puede encontrarse vacio</div>
+                <div class="text-danger" font-size: 0.9em;">@Html.ValidationMessageFor(model => model.Email)</div>
+
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.Password, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.Password, new { @class = "form-control mx-auto parpadeo", style = "width: 80%;", placeholder = "Inserta tu contraseña", @type = "password", @onkeypress = "validarTexto(event, this, 'errorPassword', /^[^\\s]*$/  );validarLongitud(event, this, 'errorPasswordLongitud', '50');", @onblur = "validarCampo(this, 'errorPassword2', /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?\":{}|<>])[A-Za-z0-9!@#$%^&*(),.?\":{}|<>]{8,}$/)" })
+                <div class="text-danger" id="errorPassword" style="display: none; font-size: 0.9em;">La contraseña no puede contener espacios</div>
+                <div class="text-danger" id="errorPassword2" style="display: none; font-size: 0.9em;">La contraseña debe contener al menos 8 caracteres inluido una mayuscula, una minuscula y un caracter especial</div>
+                <div class="text-danger" id="errorPasswordLongitud" style="display: none; font-size: 0.9em;">La contraseña unicamente puede contener 50 caracteres como maximo</div>
+                <div class="text-danger" id="errorPasswordVacio" style="display: none; font-size: 0.9em;">La contraseña no puede encontrarse vacia</div>
+                <div class="text-danger" font-size: 0.9em;">@Html.ValidationMessageFor(model => model.Password)</div>
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.Telefono, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.Telefono, new { @class = "form-control mx-auto parpadeo", style = "width: 80%;", placeholder = "Inserta tu teléfono", @onkeypress = "validarTexto(event, this, 'errorTelefono', /^\\d+$/  );validarLongitud(event, this, 'errorTelefonoLongitud', '20');" })
+                <div class="text-danger" id="errorTelefono" style="display: none; font-size: 0.9em;">El telefono unicamente puede contener numeros</div>
+                <div class="text-danger" id="errorTelefonoLongitud" style="display: none; font-size: 0.9em;">El telefono unicamente puede contener 20 caracteres como maximo</div>
+                <div class="text-danger" id="errorTelefonoVacio" style="display: none; font-size: 0.9em;">El telefono no puede encontrarse vacio</div>
+                <div class="text-danger" font-size: 0.9em;">@Html.ValidationMessageFor(model => model.Telefono)</div>
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.Celular, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.Celular, new { @class = "form-control mx-auto parpadeo", style = "width: 80%;", placeholder = "Inserta tu celular", @onkeypress = "validarTexto(event, this, 'errorCelular', /^\\d+$/  );validarLongitud(event, this, 'errorCelularLongitud', '20');" })
+                <div class="text-danger" id="errorCelular" style="display: none; font-size: 0.9em;">El Celular unicamente puede contener numeros</div>
+                <div class="text-danger" id="errorCelularLongitud" style="display: none; font-size: 0.9em;">El Celular unicamente puede contener 20 caracteres como maximo</div>
+                <div class="text-danger" font-size: 0.9em;">@Html.ValidationMessageFor(model => model.Celular)</div>
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.FechaNacimiento, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.FechaNacimiento, new { @id="TxtFechaNacimiento", @class = "form-control mx-auto parpadeo", style = "width: 80%;", @onkeypress = "validarTexto(event, this, 'errorFecha', /^\\d+$/  )", @onblur = "validarCampo( this, 'errorFechaLongitud', /^.{10}$/);" })
+                <div class="text-danger" id="errorFecha" style="display: none; font-size: 0.9em;">La fecha de nacimiento unicamente puede contener numeros</div>
+                <div class="text-danger" id="errorFechaLongitud" style="display: none; font-size: 0.9em;">La fecha debe estar completa y el año unicamente puede contener 4 digitos maximo</div>
+                <div class="text-danger" font-size: 0.9em;">@Html.ValidationMessageFor(model => model.FechaNacimiento)</div>
+
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.CURP, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.CURP, new { @class = "form-control mx-auto parpadeo", style = "width: 80%;", placeholder = "Inserta tu CURP", @onkeypress = "validarTexto(event, this, 'errorCURP', /^[A-Za-z0-9]+$/  );validarLongitud(event, this, 'errorCURPLongitud', '18');", @onblur = "validarCampo(this, 'errorCURP2', /^(|[A-Z]{4}\\d{6}[HM]{1}[A-Z]{5}[0-9]{2})$/)" })
+                <div class="text-danger" id="errorCURP" style="display: none; font-size: 0.9em;">EL CURP solo puede contener letras y numeros</div>
+                <div class="text-danger" id="errorCURP2" style="display: none; font-size: 0.9em;">El formato de CURP no es valido</div>
+                <div class="text-danger" id="errorCURPLongitud" style="display: none; font-size: 0.9em;">El formato de CURP no puede contener mas de 18 caracteres</div>
+                <div class="text-danger" font-size: 0.9em;">@Html.ValidationMessageFor(model => model.CURP)</div>
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.Rol.IdRol, new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Rols, "IdRol", "NombreRol"), "Selecciona un Rol", new { @class = "form-select mx-auto", style = "width: 80%;" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 my-3 text-center">
+                @if (Model.Imagen == null)
+                {
+                    @Html.LabelFor(model => model.Imagen, new { @class = "form-label" })
+                    <input type="file" name="ImagenUsuario" id="ImagenUsuario" class="form-control mx-auto" style="width: 80%;" onchange="ValidarImagen(event)">
+                    <div class="mt-3">
+                        <img src="\Content\Images\predeterminedicon.png" id="ImagenPrevisualizacion" style="display: block; max-width: 300px; margin: auto;" alt="Vista previa de la imagen">
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(model => model.Imagen)
+                    <label id="MensajeImagen">Imagen Actual</label>
+                    <div class="mt-3">
+                        <img src="data:@Model.ImagenMime;base64,@Convert.ToBase64String(Model.Imagen)" id="ImagenPrevisualizacion" style="display: block; max-width: 300px; margin: auto;" alt="Vista previa de la imagen">
+                    </div>
+                    <div class="mt-3">
+                        <label>Cambiar Imagen</label>
+                        <input type="file" name="ImagenUsuario" id="ImagenUsuario" class="form-control mx-auto" style="width: 80%; display:block" onchange="ValidarImagen(event)">
+                    </div>
+                }
+
+
+            </div>
+        </div>
+
+        <h2 class="my-4 text-center">Dirección</h2>
+
+        <div class="row">
+            @Html.HiddenFor(model => model.Direccion.IdDireccion)
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.Direccion.Calle, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.Direccion.Calle, new { @class = "form-control mx-auto parpadeo", style = "width: 80%;", placeholder = "Inserta tu Calle", @onkeypress = "validarTexto(event, this, 'errorCalle',/^[a-zA-ZáéíóúÁÉÍÓÚ\\s]*$/ );validarLongitud(event, this, 'errorCalleLongitud', '50');" })
+                <div class="text-danger" id="errorCalle" style="display: none; font-size: 0.9em;">La calle unicamente puede contener letras y espacios</div>
+                <div class="text-danger" id="errorCalleLongitud" style="display: none; font-size: 0.9em;">La calle unicamente puede contener 50 caracteres</div>
+                <div class="text-danger" id="errorDireccion.CalleVacio" style="display: none; font-size: 0.9em;">La calle no puede encontrarse vacia</div>
+                <div class="text-danger" font-size: 0.9em;">@Html.ValidationMessageFor(model => model.Direccion.Calle)</div>
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.Direccion.NumeroInterior, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.Direccion.NumeroInterior, new { @class = "form-control mx-auto parpadeo", style = "width: 80%;", placeholder = "Inserta el número interior", @onkeypress = "validarTexto(event, this, 'errorNumInterior',/^[a-zA-Z0-9 ]+$/ );validarLongitud(event, this, 'errorNumInteriorLongitud', '20');" })
+                <div class="text-danger" id="errorNumInterior" style="display: none; font-size: 0.9em;">El numero interior unicamente puede contener letras, numeros y espacios</div>
+                <div class="text-danger" id="errorNumInteriorLongitud" style="display: none; font-size: 0.9em;">El numero interior unicamente puede contener 20 caracteres</div>
+                <div class="text-danger" id="errorDireccion.NumeroInteriorVacio" style="display: none; font-size: 0.9em;">El numero interior no puede encontrarse vacio</div>
+                <div class="text-danger" font-size: 0.9em;">@Html.ValidationMessageFor(model => model.Direccion.NumeroInterior)</div>
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.Direccion.NumeroExterior, new { @class = "form-label" })
+                @Html.TextBoxFor(model => model.Direccion.NumeroExterior, new { @class = "form-control mx-auto parpadeo", style = "width: 80%;", placeholder = "Inserta el número exterior", @onkeypress = "validarTexto(event, this, 'errorNumExterior',/^[a-zA-Z0-9 ]+$/ );validarLongitud(event, this, 'errorNumExteriorLongitud', '20');" })
+                <div class="text-danger" id="errorNumExterior" style="display: none; font-size: 0.9em;">El numero exterior unicamente puede contener letras, numeros y espacios</div>
+                <div class="text-danger" id="errorNumExteriorLongitud" style="display: none; font-size: 0.9em;">El numero exterior unicamente puede contener 20 caracteres</div>
+                <div class="text-danger" id="errorDireccion.NumeroExteriorVacio" style="display: none; font-size: 0.9em;">El numero exterior no puede encontrarse vacio</div>
+                <div class="text-danger" font-size: 0.9em;">@Html.ValidationMessageFor(model => model.Direccion.NumeroExterior)</div>
+            </div>
+            <div class="col-6 my-3 text-center">
+
+                @Html.LabelFor(model => model.Direccion.Colonia.Municipio.Estado.IdEstado, new { @class = "form-label" })
+                @Html.DropDownListFor(model => model.Direccion.Colonia.Municipio.Estado.IdEstado, new SelectList(Model.Direccion.Colonia.Municipio.Estado.Estados, "IdEstado", "Nombre"), "Selecciona un Estado", new { @id = "ddlEstado", @onchange = "getMunicipiosByIdEstado()", @class = "form-select mx-auto", style = "width: 80%;" })
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.Direccion.Colonia.Municipio.IdMunicipio, new { @class = "form-label" })
+                @if (Model.Direccion.Colonia.Municipio.Municipios == null)
+                {
+                    @Html.DropDownListFor(model => model.Direccion.Colonia.Municipio.IdMunicipio, new SelectList(string.Empty, "IdMunicipio", "Nombre"), "Selecciona un Municipio", new { @class = "form-select mx-auto", style = "width: 80%;", @id = "ddlMunicipio", @onchange = "getColoniasByIdMunicipio()" })
+
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.Direccion.Colonia.Municipio.IdMunicipio, new SelectList(Model.Direccion.Colonia.Municipio.Municipios, "IdMunicipio", "Nombre"), "Selecciona un Municipio", new { @class = "form-select mx-auto", style = "width: 80%;", @id = "ddlMunicipio", @onchange = "getColoniasByIdMunicipio()" })
+
+                }
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.LabelFor(model => model.Direccion.Colonia.IdColonia, new { @class = "form-label" })
+                @if (Model.Direccion.Colonia.Colonias == null)
+                {
+                    @Html.DropDownListFor(model => model.Direccion.Colonia.IdColonia, new SelectList(string.Empty, "IdColonia", "Nombre"), "Selecciona una colonia", new { @class = "form-select mx-auto", style = "width: 80%;", @id = "ddlColonia" })
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.Direccion.Colonia.IdColonia, new SelectList(Model.Direccion.Colonia.Colonias, "IdColonia", "Nombre"), "Selecciona una colonia", new { @class = "form-select mx-auto", style = "width: 80%;", @id = "ddlColonia" })
+                }
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-6 my-3 text-center">
+                <button id="BtnEnviarRegistro" type="submit" class="btn btn-success col-6 my-3" style="width: 80%;">Guardar</button>
+            </div>
+            <div class="col-6 my-3 text-center">
+                @Html.ActionLink("Regresar", "GetAll", "Usuario", null, new { @class = "btn btn-danger col-6 my-3", @style = "width: 80%;" })
+            </div>
+
+        </div>
+    </div>
+}
+
+@Scripts.Render("~/bundles/jquery")
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script type="text/javascript">
+    jQuery.noConflict();
+    jQuery(function ($) {
+        $("#TxtFechaNacimiento").datepicker({
+            dateFormat: "dd-mm-yy"
+        });
+    });
+    function getMunicipiosByIdEstado() {
+        var IdEstado = $("#ddlEstado").val();
+        $.ajax({
+            'url': '@Url.Action("GetMunicipiosByIdEstado", "Usuario")',
+            'type': 'GET',
+            'dataType': 'JSON',
+            'data': { IDEstado: IdEstado },
+            'success': function (result) {
+                if (result.Correct) {
+                    $('#ddlMunicipio').empty();
+                    $('#ddlMunicipio').append('<option value="">Selecciona un municipio</option>')
+                    $.each(result.Objects, function(index, item) {
+                        $('#ddlMunicipio').append('<option value="' + item.IdMunicipio + '">' + item.Nombre + '</option>')
+                    })
+                    $('#ddlColonia').empty();
+                    $('#ddlColonia  ').append('<option value="">Selecciona un municipio</option>')
+                }
+            },
+            'error': function (result) {
+                console.log(result.ErrorMessage)
+            }
+        })
+    }
+    function getColoniasByIdMunicipio() {
+        var IdMunicipio = $("#ddlMunicipio").val();
+$.ajax({
+    'url': '@Url.Action("GetColoniasByIdMunicipio", "Usuario")',
+    'Type': 'GET',
+    'dataType': 'JSON',
+    'data': { 'IDMunicipio': IdMunicipio },
+    'success': function (result) {
+        if (result.Correct) {
+            $('#ddlColonia').empty();
+            $('#ddlColonia').append('<option value="">Selecciona una colonia</option>')
+            $.each(result.Objects, function (index, item) {
+                $('#ddlColonia').append('<option value="' + item.IdColonia + '">' + item.Nombre + '</option>')
+            })
+        }
+    },
+    'error': function (result) {
+        console.log(result.ErrorMessage)
+    }
+})
+    }
+    function ValidarImagen() {
+        var ExtensionPermitida = ['jpeg', 'jpg', 'png'];
+        var Extension = document.getElementById('ImagenUsuario').value.split('.').pop().toLowerCase();
+        var previsualizacion = document.getElementById('ImagenPrevisualizacion');
+        var valido = false
+        for (var index in ExtensionPermitida) {
+            if (Extension == ExtensionPermitida[index]) {
+                valido = true;
+                break;
+            }
+        }
+        if (!valido) {
+            alert('Las extensiones permitidas son : .' + ExtensionPermitida.join(', .'));
+            document.getElementById('ImagenUsuario').value = "";
+        } else {
+            var elemento = event.target;
+            var archivo = elemento.files[0];
+
+            if (archivo) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    previsualizacion.src = e.target.result;
+                    previsualizacion.style.display = 'block';
+                };
+
+                reader.readAsDataURL(archivo);
+            }
+        }
+    }
+
+    function validarTexto(event, input, div, regex) {
+        var textoRegex = regex
+        var letra = event.key
+        var error = document.getElementById(div)
+        var error2 = document.getElementById('error' + input.name + 'Vacio')
+        if (textoRegex.test(letra)) {
+            input.classList.add('valido');
+            input.classList.remove('invalido');
+            error.style.display = 'none'
+            error2.style.display = 'none'
+
+        } else {
+            event.preventDefault();
+            input.style.backgroundColor = 'lightcoral';
+
+            setTimeout(() => {
+                input.style.backgroundColor = '';
+            }, 500);
+            error.style.display = 'block'
+            setTimeout(() => {
+                error.style.display = 'none';
+            }, 5000);
+
+        }
+
+    }
+    function validarLongitud(event, input, div, longitud) {
+        var error = document.getElementById(div)
+        if (input.value.length >= longitud) {
+            event.preventDefault();
+            error.style.display = 'block'
+            input.style.backgroundColor = 'lightcoral';
+
+
+            setTimeout(() => {
+                input.style.backgroundColor = '';
+            }, 500);
+
+            setTimeout(() => {
+                error.style.display = 'none';
+            }, 5000);
+
+        }
+    }
+
+    function validarCampo(input, div, regex) {
+        var textoRegex = regex
+        var texto = input.value
+        var error = document.getElementById(div)
+
+        if (textoRegex.test(texto)) {
+            input.classList.add('valido');
+            input.classList.remove('invalido');
+            error.style.display = 'none'
+
+
+        } else {
+            input.style.backgroundColor = 'lightcoral';
+            setTimeout(() => {
+                input.style.backgroundColor = '';
+            }, 500);
+            error.style.display = 'block'
+            input.classList.add('invalido');
+            input.classList.remove('valido');
+
+        }
+
+    }
+    function ComprobarFormato() {
+        var inputs = [];
+        inputs.push(document.getElementById('@Html.IdFor(model => model.Nombre)'));
+        inputs.push(document.getElementById('@Html.IdFor(model => model.ApellidoPaterno)'));
+        inputs.push(document.getElementById('@Html.IdFor(model => model.Sexo)'));
+        inputs.push(document.getElementById('@Html.IdFor(model => model.UserName)'));
+        inputs.push(document.getElementById('@Html.IdFor(model => model.Email)'));
+        inputs.push(document.getElementById('@Html.IdFor(model => model.Password)'));
+        inputs.push(document.getElementById('@Html.IdFor(model => model.Telefono)'));
+        inputs.push(document.getElementById('@Html.IdFor(model => model.FechaNacimiento)'));
+        inputs.push(document.getElementById('@Html.IdFor(model => model.CURP)'));
+        inputs.push(document.getElementById('@Html.IdFor(model => model.Direccion.Calle)'));
+        inputs.push(document.getElementById('@Html.IdFor(model => model.Direccion.NumeroInterior)'));
+        inputs.push(document.getElementById('@Html.IdFor(model => model.Direccion.NumeroExterior)'));
+        var validacion = true;
+        for (i = 0; i < inputs.length; i++) {
+            if (inputs[i].classList.contains('invalido')) {
+                validacion = false;
+            }
+            if (inputs[i].value == "" && i != 8 && i != 7) {
+                var error = document.getElementById('error' + inputs[i].name + 'Vacio')
+                error.style.display = 'block'
+                inputs[i].classList.add('invalido');
+                inputs[i].classList.remove('valido');
+                validacion = false;
+            }
+        }
+        if (validacion) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+</script>

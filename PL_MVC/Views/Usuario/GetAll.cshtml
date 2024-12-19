@@ -1,0 +1,230 @@
+﻿@model ML.Usuario
+@{
+    ViewBag.Title = "GetAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .direccion {
+        white-space: nowrap; /* Evita que el texto se divida */
+    }
+</style>
+@*@using (Html.BeginForm("GetAll", "Usuario", FormMethod.Get, new { enctype = "multipart/form-data" }))*@
+
+    <div class="container">
+        <div class="d-flex justify-content-center">
+            <div class="col-12">
+                <div class="row">
+                    <div class="col-12">
+                        <button type="button" class="btn btn-success col-6 my-3" style="width: 20%; " onclick="CambiarVistaBusquedaInteligente('divbusquedainteligente')">Busqueda inteligente</button>
+                        <button type="button" class="btn btn-success col-6 my-3" style="width: 20%; " onclick="CambiarVistaBusquedaInteligente('InsercionMasiva')">Insercion Masiva</button>
+                        <form action="@Url.Action("EnviarCorreo", "Usuario")" method="post">
+                            <button type="submit" class="btn btn-success col-6 my-3" style="width: 20%;">Enviar Correo</button>
+                        </form>
+                    </div>
+                    @using (Html.BeginForm("GetAll", "Usuario", FormMethod.Get))
+                    {
+                        <div id="divbusquedainteligente" style="display: none; margin: 10px 0; max-height: 0px; opacity: 0; transition: max-height 0.5s ease, opacity 0.5s ease;">
+                            <div class="row">
+                                <div class="col-6 my-3 text-center">
+                                    @Html.LabelFor(model => model.Nombre, new { @class = "form-label" })
+                                    @Html.TextBoxFor(model => model.Nombre, new { @class = "form-control mx-auto", style = "width: 80%;", placeholder = "Inserta el nombre" })
+                                </div>
+                                <div class="col-6 my-3 text-center">
+                                    @Html.LabelFor(model => model.ApellidoPaterno, new { @class = "form-label" })
+                                    @Html.TextBoxFor(model => model.ApellidoPaterno, new { @class = "form-control mx-auto", style = "width: 80%;", placeholder = "Inserta el apellido paterno" })
+                                </div>
+                                <div class="col-6 my-3 text-center">
+                                    @Html.LabelFor(model => model.ApellidoMaterno, new { @class = "form-label" })
+                                    @Html.TextBoxFor(model => model.ApellidoMaterno, new { @class = "form-control mx-auto", style = "width: 80%;", placeholder = "Inserta el apellido materno" })
+                                </div>
+                                <div class="col-6 my-3 text-center">
+                                    @Html.LabelFor(model => model.Rol.IdRol, new { @class = "form-label" })
+                                    @Html.DropDownListFor(model => model.Rol.IdRol, new SelectList(Model.Rol.Rols, "IdRol", "NombreRol"), "Selecciona un Rol", new { @class = "form-select mx-auto", style = "width: 80%;" })
+                                </div>
+                                <div class="col-6 my-3 text-center">
+                                    <button type="submit" class="btn btn-success col-6 my-3" style="width: 80%;">Buscar Registro</button>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                    @using (Html.BeginForm("InsercionMasiva", "Usuario", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div id="InsercionMasiva" style="display: none; margin: 10px 0; max-height: 0px; opacity: 0; transition: max-height 0.5s ease, opacity 0.5s ease;">
+                            <div class="row">
+                                <div class="col-6 my-3 text-center">
+                                    <label>Archivo text o excel</label>
+                                    <input type="file" name="UsuarioCarga" id="UsuarioCarga" class="form-control mx-auto" style="width: 80%; display:block" onchange="ValidarText('UsuarioCarga')">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-6 my-3 text-center">
+                                    @if (Session["pathExcel"] == null)
+                                    {
+                                        <button type="submit" class="btn btn-success col-6 my-3" style="width: 80%;">Validar Registros</button>
+                                    }
+                                    else
+                                    {
+                                        <button type="submit" class="btn btn-success col-6 my-3" style="width: 80%;">Insertar Registros</button>
+                                    }
+                                </div>
+                                
+                            </div>
+                        </div>
+                     }
+
+                        <div class="table-responsive">
+                            @if (Model.Usuarios != null)
+                            {
+                                <table class="table table-bordered table-dark">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col" colspan="18">Lista de Usuarios Registrados</th>
+                                        </tr>
+                                        <tr>
+                                            <th scope="col">IdUsuario</th>
+                                            <th scope="col">Icono</th>
+                                            <th scope="col">Nombre</th>
+                                            <th scope="col">ApellidoPaterno</th>
+                                            <th scope="col">ApellidoMaterno</th>
+                                            <th scope="col">Sexo</th>
+                                            <th scope="col">UserName</th>
+                                            <th scope="col">Email</th>
+                                            <th scope="col">Password</th>
+                                            <th scope="col">Telefono</th>
+                                            <th scope="col">Celular</th>
+                                            <th scope="col">FechaNacimiento</th>
+                                            <th scope="col">CURP</th>
+                                            <th scope="col">IdRol</th>
+                                            <th scope="col">Direccion</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">Editar</th>
+                                            <th scope="col">Eliminar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                            @foreach (ML.Usuario usuario in Model.Usuarios)
+                                            {
+                                                <tr class="table-light">
+                                                    <td>@usuario.Id</td>
+                                                    @if (usuario.Imagen == null)
+                                                    {
+                                                        <td><img src="\Content\Images\predeterminedicon.png" id="ImagenPrevisualizacion" style="max-width: 50px; margin: auto;" alt="Vista previa de la imagen"></td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td><img src="data:@usuario.ImagenMime;base64,@Convert.ToBase64String(usuario.Imagen)" style="max-width: 50px; margin: auto;" alt="Vista previa de la imagen"></td>
+                                                    }
+
+                                                    <td>@usuario.Nombre</td>
+                                                    <td>@usuario.ApellidoPaterno</td>
+                                                    <td>@usuario.ApellidoMaterno</td>
+                                                    <td>@usuario.Sexo</td>
+                                                    <td>@usuario.UserName</td>
+                                                    <td>@usuario.Email</td>
+                                                    <td>@usuario.Password</td>
+                                                    <td>@usuario.Telefono</td>
+                                                    <td>@usuario.Celular</td>
+                                                    <td>@usuario.FechaNacimiento</td>
+                                                    <td>@usuario.CURP</td>
+                                                    <td>@usuario.Rol.NombreRol</td>
+                                                    <td class="direccion">
+                                                        Calle @usuario.Direccion.Calle, Numero @usuario.Direccion.NumeroExterior @usuario.Direccion.NumeroInterior,
+                                                        Colonia @usuario.Direccion.Colonia.Nombre, C.P. @usuario.Direccion.Colonia.CodigoPostal,
+                                                        @usuario.Direccion.Colonia.Municipio.Nombre, @usuario.Direccion.Colonia.Municipio.Estado.Nombre
+                                                    </td>
+                                                    <td>
+                                                        @if (usuario.Status)
+                                                        {
+                                                            <div class="form-check form-switch">
+                                                                <input type="checkbox" class="form-check-input" checked onchange="UpdateStatus(@usuario.Id, this)" />
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="form-check form-switch">
+                                                                <input type="checkbox" class="form-check-input" onchange="UpdateStatus(@usuario.Id, this)" />
+                                                            </div>
+                                                        }
+                                                    </td>
+                                                    <td><a href="@Url.Action("Form","Usuario", new {IdUsuario = usuario.Id})"><i class="bi bi-files" style="font-size: 2rem; color: darkblue"></i></a></td>
+                                                    <td><a href="@Url.Action("confirmacion","Usuario", new {IdUsuario = usuario.Id})"><i class="bi bi-trash" style="font-size: 2rem; color: red"></i></a></td>
+                                                </tr>
+                                            }
+                                    </tbody>
+                                </table>
+                            }
+                            else
+                            {
+                                <div class="alert alert-danger" role="alert">@ViewBag.error</div>
+                            }
+                        </div>
+                        <a class="btn btn-success" href="@Url.Action("Form","Usuario")">Agregar usuario</a>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+@Scripts.Render("~/bundles/jquery")
+<script>
+    function UpdateStatus(IdUsuario, input) {
+        var status = input.checked
+        $.ajax({
+            'url': '@Url.Action("UpdateUsuarioStatus", "Usuario")',
+            'type': 'POST',
+            'dataType': 'JSON',
+            'data': { IdUsuario: IdUsuario, Status: status },
+            'success': function (result) {
+                if (result.Correct) {
+
+                } else {
+                    alert("Ocurrio un error al cambiar el estatus")
+                }
+            },
+            'error': function (result) {
+                console.log(result.ErrorMessage)
+            }
+        })
+    }
+    function CambiarVistaBusquedaInteligente(divID) {
+        var divbusqueda = document.getElementById(divID);
+        if (divbusqueda.style.maxHeight === '300px') {
+            divbusqueda.style.maxHeight = '0';
+            divbusqueda.style.opacity = '0';
+            setTimeout(function () {
+                divbusqueda.style.display = 'none'; 
+            }, 500); 
+        } else {
+            divbusqueda.style.display = 'block'; 
+            setTimeout(function () {
+                divbusqueda.style.maxHeight = '300px';
+                divbusqueda.style.opacity = '1';
+            }, 10); 
+        }
+    }
+
+    function ValidarText(fileID) {
+        var ExtensionPermitida = ['txt','xlsx'];
+        var Extension = document.getElementById(fileID).value.split('.').pop().toLowerCase();
+        var valido = false
+        for (var index in ExtensionPermitida) {
+            if (Extension == ExtensionPermitida[index]) {
+                valido = true;
+                break;
+            }
+        }
+        if (!valido) {
+            alert('Las extensiones permitidas son : .' + ExtensionPermitida.join(', .'));
+            document.getElementById(fileID).value = "";
+        }
+    }
+</script>
+
+

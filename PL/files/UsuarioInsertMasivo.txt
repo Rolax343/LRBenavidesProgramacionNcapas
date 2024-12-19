@@ -1,0 +1,6 @@
+Nombre|ApellidoPaterno|ApellidoMaterno|Sexo|UserName|Email|Password|Telefono|Celular|FechaNacimiento|CURP|IdRol|Calle|NumeroInterior|NumeroExterior|IdColonia
+Uriel David|Perez|Gutierrez|H|SuperBoyPrime|uriel49@gmail.com|1234abcd|5545796223|5688414237|1999-05-05|PEGU990505HDFNLH49|1|Calle del Bosque|10|205|37
+Ana|Lopez|Martinez|M|AnaLopez|ana.lopez@gmail.com|qwerty123|5551234567|5567890123|1995-03-15|LOPA950315MDFLNA06|2|Avenida de la Luz|22|305|85
+Carlos|Sanchez|Vasquez|H|CarlosS|carlos.sanchez@gmail.com|mypassword|5543219876|5578901234|1990-11-25|SANC901125HDFVCR02|2|Calle de la Esperanza|5|407|49
+María|Fernandez|Ramirez|M|MariaFernandez|maria.fernandez@gmail.com|securepass|5534567890|5598765432|1992-07-30|FERM920730MDFRML02|3|Calle del Mar|12|502|102
+Luis|Martinez|Hernandez|H|LuisMart|luis.martinez@gmail.com|mypassword123|5587654321|5576543210|1988-02-18|MALU880218HDFRNL06|3|Avenida de los Árboles|18|601|68
